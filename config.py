@@ -7,18 +7,18 @@ model_config = {
         "lstm_first": {
             "input_size": 1024,
             "hidden_size": 1024,
-            "num_layers": 1,
+            "num_layers": 1, # two layer, first
             "batch_first": True,
             "dropout": 0.1, # no info
-            "bidirectional": True
+            "bidirectional": True # bidirectional encoder
         },
         "lstm_second": {
             "input_size": 2048,
             "hidden_size": 1024,
-            "num_layers": 1,
+            "num_layers": 1, # two layer, second
             "batch_first": True,
             "dropout": 0.1, # no info
-            "bidirectional": True
+            "bidirectional": True # bidirectional encoder
         },
         "latent_Wmu": {
             "in_features": 2048,
@@ -43,7 +43,7 @@ model_config = {
             "num_layers": 2,
             "batch_first": True,
             "dropout": 0.1, # no info
-            "bidirectional": False,
+            "bidirectional": False, # Unidirectional decoder
         },
         "W_dec_init_state": {
             "in_features": 512,
@@ -56,7 +56,7 @@ model_config = {
             "num_layers": 2,
             "batch_first": True,
             "dropout": 0.1, # no info
-            "bidirectional": False,
+            "bidirectional": False, # Unidirectional decoder
         },
         "token_embedding": {
             "num_embeddings": 512,
