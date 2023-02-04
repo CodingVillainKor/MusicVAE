@@ -1,6 +1,11 @@
 # MusicVAE - Drummer
 Will be closed soon
 
+## Do-it-fast
+> Download and execute `train_and_inference.ipynb`
+>
+> `.py files` are equivalent to `train_and_inference.ipynb` (just for plausible module structure)
+
 ## 0. Requirements
 pretty_midi / pypianoroll
 
