@@ -4,20 +4,20 @@ from torch.distributions.normal import Normal
 from torch.distributions.kl import kl_divergence
 
 
-def recon_loss(x_hat, x):
+def recon_loss(x_hat, x): # reconstruction loss
     return F.nll_loss(torch.log(x_hat).permute(0,2,1), x)
 
 def kl_loss(mu, sigma, beta, free_bits): # 5.2. 1. 2
     device = mu.device
     mu_p  = torch.tensor([0.], device=device)
-    sig_p = torch.tensor([1.], device=device)
+    sig_p = torch.tensor([1.], device=device) 
     p_dist = Normal(mu_p, sig_p)
     q_dist = Normal(mu, sigma)
 
     kl_div = kl_divergence(q_dist, p_dist)
     free_bits_tensor = torch.tensor([free_bits], device=device)
     zero = torch.tensor([0.], device=device)
-    kl_loss = - beta * torch.max(torch.mean(kl_div)-free_bits, zero)
+    kl_loss = - beta * torch.max(torch.mean(kl_div)-free_bits, zero) # beta_VAE / KL threshold
 
     return kl_loss
 
