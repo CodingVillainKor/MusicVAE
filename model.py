@@ -74,7 +74,7 @@ class Decoder(nn.Module):
         out = torch.cat(outs, 1)
         return out
     
-    def decoder_rnn_tf(self, decoder_in, x):
+    def decoder_rnn_tf(self, decoder_in, x): # Teacher forcing
         B, U, D = decoder_in.shape # U is the number of bars
         Bx, L = x.shape 
         assert D % 4 == 0
@@ -102,7 +102,7 @@ class Decoder(nn.Module):
         
         return o_unfolded
 
-    def decoder_rnn_fg(self, decoder_in):
+    def decoder_rnn_fg(self, decoder_in): # Feedback generation (inference)
         B, U, D = decoder_in.shape # U is the number of bars
         assert D % 4 == 0
         decoder_in = decoder_in.view(-1, D) # B U D > (BU) D
@@ -127,7 +127,7 @@ class Decoder(nn.Module):
         out_unfolded = out.view(B, U*self.num_decoder_out, -1)
         return out_unfolded
 
-    def decoder_rnn_ss(self, decoder_in, x, eps):
+    def decoder_rnn_ss(self, decoder_in, x, eps): # Scheduled sampling
         # 1) with torch.no_grad(), get x_hat indices
         # 2) random mixing
         # 3) decoder_rnn_tf with mixed sample
@@ -183,13 +183,13 @@ class MusicVAE(nn.Module):
         out = x_hat if mode == "generate" else (x_hat, mu, sig)
         return out
 
-    def z_reparam(self, mu, sig):
+    def z_reparam(self, mu, sig): # Reparameterization
         eps = torch.randn_like(mu, requires_grad=False)
         
         z_reparam = mu + sig*eps
         return z_reparam
         
-if __name__ == "__main__":
+if __name__ == "__main__": # for debugging
     from config import model_config
     device = torch.device("cuda") if torch.cuda.is_available else torch.device("cpu")
     test_x = torch.randint(128, [10, 256], device=device)
